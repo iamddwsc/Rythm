@@ -1,0 +1,37 @@
+[
+    {
+        "rating": "4.5",
+        "title" : "THE WATER CURE",
+        "text": "Martin Hyatt",
+        "img":"assets/pic-8.png",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.6",
+        "title" : "PEACE LIFE",
+        "text": "Hazard Bin",
+        "img": "assets/pic-7.png",
+        "audio": "June - Bobby Richards.mp3"
+    },
+    {
+        "rating": "4.5",
+        "title" : "THE WATER CURE",
+        "text": "Martin Hyatt",
+        "img":"assets/pic-8.png",
+        "audio": "Voices.mp3"
+    },
+    {
+        "rating": "4.6",
+        "title" : "PEACE LIFE",
+        "text": "Hazard Bin",
+        "img": "assets/pic-7.png",
+        "audio": "June - Bobby Richards.mp3"
+    },
+    {
+        "rating": "4.5",
+        "title" : "THE WATER CURE",
+        "text": "Martin Hyatt",
+        "img":"assets/pic-8.png",
+        "audio": "Voices.mp3"
+    }
+]
