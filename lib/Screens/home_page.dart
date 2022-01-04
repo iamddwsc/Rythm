@@ -94,25 +94,21 @@ class HomePage extends StatelessWidget {
                       ));
                 }),
             GeneralHorizontalAlbumWidget(
-                country: RythmAPI().NEW_ALBUM_VN,
-                albumTitle: 'New Album VN 2021'),
+                country: RythmAPI().NEW_ALBUM_VN, albumTitle: 'Album VN 2021'),
             GeneralHorizontalAlbumWidget(
                 country: RythmAPI().NEW_ALBUM_USUK,
-                albumTitle: 'New Album USUK 2021'),
+                albumTitle: 'Album USUK 2021'),
             GeneralHorizontalAlbumWidget(
-                country: RythmAPI().NEW_ALBUM_KR,
-                albumTitle: 'New Album KR 2021'),
+                country: RythmAPI().NEW_ALBUM_KR, albumTitle: 'Album KR 2021'),
             GeneralHorizontalAlbumWidget(
-                country: RythmAPI().NEW_ALBUM_JP,
-                albumTitle: 'New Album JP 2021'),
+                country: RythmAPI().NEW_ALBUM_JP, albumTitle: 'Album JP 2021'),
             GeneralHorizontalAlbumWidget(
-                country: RythmAPI().NEW_ALBUM_CN,
-                albumTitle: 'New Album CN 2021'),
+                country: RythmAPI().NEW_ALBUM_CN, albumTitle: 'Album CN 2021'),
             GeneralHorizontalAlbumWidget(
                 country: RythmAPI().NEW_ALBUM_Other,
-                albumTitle: 'Other New Album 2021'),
+                albumTitle: 'Other Album 2021'),
             Container(
-              height: 50.0,
+              height: 100.0,
             )
           ],
         ),

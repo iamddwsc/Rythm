@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rythm/Screens/AlbumDetails/album_page_header.dart';
+import 'package:rythm/Utils/calc_median_color.dart';
 import 'dart:math' as math;
 import 'package:rythm/app_color.dart' as AppColors;
 
@@ -9,12 +10,14 @@ class MyAppSpace extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.urlimage,
-      required this.albumArtist})
+      required this.albumArtist,
+      required this.color})
       : super(key: key);
 
   final String title;
   final String albumArtist;
   final String urlimage;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +37,50 @@ class MyAppSpace extends StatelessWidget {
         const fadeEnd1 = 1.0;
         final opacity1 = 1.0 - Interval(fadeStart, fadeEnd).transform(t);
         //print(Interval(0.4, fadeEnd).transform(t));
+        // return FutureBuilder<Color>(
+        //     future: getMedianColor(urlimage.toString()),
+
+        //     //future: getImagePalette(NetworkImage(urlimage)),
+        //     builder: (context, snapshot) {
+        //       if ((snapshot.hasError) || (!snapshot.hasData)) {
+        // return Container(
+        //   child: Center(
+        //     child: Container(
+        //         height: 265.0,
+        //         child: Center(child: CircularProgressIndicator())),
+        //   ),
+        // );
+        //       }
+
+        //     }
+        //     );
         return Stack(
           fit: StackFit.expand,
           children: [
             Container(
               decoration: BoxDecoration(
+                // gradient: LinearGradient(
+                //     tileMode: TileMode.decal,
+                //     begin: Alignment.topCenter,
+                //     end: Alignment.bottomCenter,
+                //     colors: [
+                //       Colors.blue[500]!,
+                //       Colors.blue[200]!
+                //       //Color(0xFF121212)
+                //     ],
+                //     stops: [
+                //       0.0,
+                //       1.0
+                //     ]),
                 gradient: LinearGradient(
-                    tileMode: TileMode.decal,
+                    //tileMode: TileMode.decal,
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.blue[500]!,
-                      Colors.blue[200]!
+                      isLightColor(color)
+                          ? darken(color, .4)
+                          : lighten(color, 0.1),
+                      lighten(color, 0.4)
                       //Color(0xFF121212)
                     ],
                     stops: [
@@ -97,7 +132,7 @@ class MyAppSpace extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 14.0,
+              top: 18.0,
               left: 50.0,
               width: MediaQuery.of(context).size.width * 0.7,
               child: Opacity(
@@ -111,9 +146,11 @@ class MyAppSpace extends StatelessWidget {
                       child: Text(title,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 17.5,
+                              fontSize: 18,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white)),
+                              // color: isLightColor(snapshot.data!)
+                              //     ? darken(snapshot.data!, .4)
+                              color: lighten(color, 0.5))),
                     )
                   ],
                 ),

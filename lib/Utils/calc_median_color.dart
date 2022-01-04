@@ -1,6 +1,7 @@
-import 'dart:io';
+// import 'dart:io';
+import 'dart:math' as math;
 
-import 'package:bitmap/bitmap.dart';
+// import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -40,4 +41,41 @@ Future<Color> getImagePalette(ImageProvider imageProvider) async {
   final PaletteGenerator paletteGenerator =
       await PaletteGenerator.fromImageProvider(imageProvider);
   return paletteGenerator.dominantColor!.color;
+}
+
+Color darken(Color color, [double amount = .1]) {
+  assert(amount >= 0 && amount <= 1);
+
+  final hsl = HSLColor.fromColor(color);
+  final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+  return hslDark.toColor();
+}
+
+Color lighten(Color color, [double amount = .1]) {
+  assert(amount >= 0 && amount <= 1);
+
+  final hsl = HSLColor.fromColor(color);
+  final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+  return hslLight.toColor();
+}
+
+bool isLightColor(Color color) {
+  // final grayscale =
+  //     (0.299 * color.red) + (0.587 * color.green) + (0.114 * color.blue);
+  // print(grayscale);
+  // if (grayscale < 128) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
+  final hsp = math.sqrt(0.299 * (color.red * color.red) +
+      0.587 * (color.green * color.green) +
+      0.114 * (color.blue * color.blue));
+  if (hsp > 127.5) {
+    return true;
+  } else {
+    return false;
+  }
 }

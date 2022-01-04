@@ -126,7 +126,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       builder: (context, Map<dynamic, dynamic> info, _) {
                         //final index = box.get('myPlayingIndex');
                         //var colour_data = getMedianColor(info['artUri'].toString()).;
-                        //print('aaaaaaaaaa ${info['title'].toString()}');
+                        // print(
+                        //     'aaaaaaaaaa info data ${info['title'].toString()}');
+                        //print('OK');
                         if (info.isNotEmpty) {
                           // return FutureBuilder<Color>(
                           //     future: getMedianColor(info['artUri'].toString()),
@@ -172,34 +174,35 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           //               child: Container(), visible: false);
                           //     });
                           return Positioned(
-                              bottom: 57.0,
+                              bottom: 56.0,
                               height: 60.0,
                               width: MediaQuery.of(context).size.width,
-                              child: Container(
-                                //padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                                child: Material(
-                                    //elevation: 5.0,
-                                    child: ValueListenableBuilder<Box<int>>(
-                                  valueListenable:
-                                      Boxes.getPlayingIndex().listenable(),
-                                  builder: (context, box, widget) {
-                                    final index = box.get('myPlayingIndex');
-                                    //print('aaaaaaaaaa ${index}');
-                                    //print(index);
-                                    // if (index != Null) {
-                                    //   return MiniPlayer(index: index);
-                                    // } else
-                                    //   return Divider();
-                                    if (index != null) {
-                                      return MiniPlayer(
-                                          index: index, info: info);
-                                    } else {
-                                      return Visibility(
-                                          child: Container(), visible: false);
-                                    }
-                                  },
-                                )),
-                              ));
+                              // child: Container(
+                              //   //padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                              //   child: Material(
+                              //       //elevation: 5.0,
+                              //       child: ValueListenableBuilder<Box<int>>(
+                              //     valueListenable:
+                              //         Boxes.getPlayingIndex().listenable(),
+                              //     builder: (context, box, widget) {
+                              //       final index = box.get('myPlayingIndex');
+                              //       //print('aaaaaaaaaa ${index}');
+                              //       //print(index);
+                              //       // if (index != Null) {
+                              //       //   return MiniPlayer(index: index);
+                              //       // } else
+                              //       //   return Divider();
+                              //       if (index != null) {
+                              //         return MiniPlayer(
+                              //             index: index, info: info);
+                              //       } else {
+                              //         return Visibility(
+                              //             child: Container(), visible: false);
+                              //       }
+                              //     },
+                              //   )),
+                              // ));
+                              child: MiniPlayer(info: info));
                         } else {
                           return Visibility(child: Container(), visible: false);
                         }

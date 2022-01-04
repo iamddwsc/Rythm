@@ -42,49 +42,59 @@ class Song {
   @HiveField(1)
   String? songTitle;
   @HiveField(2)
-  String? songArtist;
+  String? songSinger;
   @HiveField(3)
-  String? songOfAlbum;
+  String? songWriter;
   @HiveField(4)
-  String? songDateRelease;
+  String? songOfAlbum;
   @HiveField(5)
-  String? mp3Url128;
+  String? songDateRelease;
   @HiveField(6)
-  String? mp3Url320;
+  String? mp3Url128;
   @HiveField(7)
+  String? mp3Url320;
+  @HiveField(8)
   String? mp3Url500;
+  @HiveField(9)
+  String? lossless;
 
   Song(
       {this.songImage,
       this.songTitle,
-      this.songArtist,
+      this.songSinger,
+      this.songWriter,
       this.songOfAlbum,
       this.songDateRelease,
       this.mp3Url128,
       this.mp3Url320,
-      this.mp3Url500});
+      this.mp3Url500,
+      this.lossless});
 
   Song.fromJson(Map<String, dynamic> json) {
     this.songImage = json["song_image"];
     this.songTitle = json["song_title"];
-    this.songArtist = json["song_artist"];
+    this.songSinger = json["song_singer"];
+    this.songWriter = json["songWriter"];
     this.songOfAlbum = json["song_of_album"];
     this.songDateRelease = json["song_date_release"];
     this.mp3Url128 = json["mp3_url_128"];
     this.mp3Url320 = json["mp3_url_320"];
     this.mp3Url500 = json["mp3_url_500"];
+    this.lossless = json["lossless"];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data["song_image"] = this.songImage;
     data["song_title"] = this.songTitle;
-    data["song_artist"] = this.songArtist;
+    data["song_singer"] = this.songSinger;
+    data["songWriter"] = this.songWriter;
     data["song_of_album"] = this.songOfAlbum;
     data["song_date_release"] = this.songDateRelease;
     data["mp3_url_128"] = this.mp3Url128;
     data["mp3_url_320"] = this.mp3Url320;
     data["mp3_url_500"] = this.mp3Url500;
+    data["lossless"] = this.lossless;
     return data;
   }
 }

@@ -14,12 +14,12 @@ import 'package:rythm/Services/audio_manager.dart';
 import 'package:rythm/Services/notifiers/play_button_notifier.dart';
 import 'package:rythm/Services/notifiers/progress_notifier.dart';
 import 'package:rythm/Utils/calc_median_color.dart';
+import 'package:rythm/Utils/custom_page_route.dart';
 import 'package:rythm/app_color.dart' as AppColors;
 
 class MiniPlayer extends StatefulWidget {
-  const MiniPlayer({Key? key, required this.index, required this.info})
-      : super(key: key);
-  final int index;
+  const MiniPlayer({Key? key, required this.info}) : super(key: key);
+  //final int index;
   //final Color medianColor;
   final Map<dynamic, dynamic> info;
   @override
@@ -83,13 +83,19 @@ class _MiniPlayerState extends State<MiniPlayer> {
     //final ImageProvider imgProvider;
     final AudioManager audioManager = GetIt.I<AudioManager>();
     return FutureBuilder<Color>(
+        //initialData: Colors.transparent,
         future: getMedianColor(widget.info['artUri'].toString()),
-        // future:
-        //     getImagePalette(NetworkImage(info['artUri'].toString())),
+        //future: getImagePalette(NetworkImage(widget.info['artUri'].toString())),
         builder: (context, snapshot) {
+          if (!snapshot.hasData) {}
           if (snapshot.hasData) {
+            //print('OK2');
             return Container(
-              decoration: BoxDecoration(color: snapshot.data),
+              decoration: BoxDecoration(
+                color: isLightColor(snapshot.data!)
+                    ? darken(snapshot.data!, .2)
+                    : lighten(snapshot.data!, .3),
+              ),
               child: Column(
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -108,8 +114,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
                           GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PlayerScreen()));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => PlayerScreen()));
+                              Navigator.of(context).push(CustomPageRoute(
+                                  child: PlayerScreen(myColor: snapshot.data!),
+                                  direction: AxisDirection.up));
                             },
                             // onPanDown: (d) {
                             //   x1Prev = x1;
@@ -122,27 +131,32 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             //   // boxIndex.put('myPlayingIndex', widget.index + 1);
                             // },
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              padding: EdgeInsets.only(left: 5.0, top: 8.0),
+                              width: MediaQuery.of(context).size.width * 0.62,
+                              padding: EdgeInsets.only(left: 5.0),
                               child: Container(
                                 //height: 40.0,
+                                // padding: EdgeInsets.only(bottom: 10.0),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       widget.info['title'].toString(),
                                       style: TextStyle(
+                                          //fontSize: 24.0,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w900),
                                       overflow: TextOverflow.ellipsis,
                                     ),
+                                    //SizedBox(height: 1.0),
                                     Text(
-                                      widget.info['artist'].toString(),
-                                      textAlign: TextAlign.left,
+                                      widget.info['artist'],
+                                      overflow: TextOverflow.ellipsis,
+                                      //textAlign: TextAlign.left,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.subTitleText),
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              AppColors.white.withOpacity(0.7)),
                                     )
                                   ],
                                 ),
@@ -168,7 +182,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
               ),
             );
           } else {
-            return Container();
+            return Visibility(child: Container(), visible: false);
           }
         });
   }
@@ -338,6 +352,7 @@ class CurrentSong extends StatelessWidget {
                         Text(
                           info['artist'].toString(),
                           textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: AppColors.subTitleText),

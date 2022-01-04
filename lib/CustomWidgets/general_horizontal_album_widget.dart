@@ -29,7 +29,7 @@ class GeneralHorizontalAlbumWidget extends StatelessWidget {
                       albumTitle ?? 'Null',
                       style: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color: AppColors.textColor),
                     ),
                   ),
@@ -39,7 +39,7 @@ class GeneralHorizontalAlbumWidget extends StatelessWidget {
                     child: Text(
                       'Xem tất cả',
                       style: TextStyle(
-                          fontFamily: 'OpenSans',
+                          //fontFamily: 'OpenSans',
                           fontSize: 14,
                           color: AppColors.textColor),
                     ),
@@ -127,9 +127,10 @@ class HorizontalAlbumWidget extends StatelessWidget {
                     child: Text(
                       albumHomePage!.itemArtist ?? "Null",
                       style: TextStyle(
-                          color: AppColors.subTextColor,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600),
+                        color: AppColors.subTextColor,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
@@ -137,6 +138,8 @@ class HorizontalAlbumWidget extends StatelessWidget {
                     child: Material(
                   type: MaterialType.transparency,
                   child: InkWell(
+                    enableFeedback: false,
+                    splashColor: Colors.transparent,
                     onTap: () {
                       // final snackBar = SnackBar(
                       //     content: Text(albumHomePage!.itemHref ?? 'Null'));
@@ -145,6 +148,9 @@ class HorizontalAlbumWidget extends StatelessWidget {
                           builder: (context) => AlbumDetails(
                                 albumHomePage: albumHomePage,
                               )));
+                      // Navigator.pushNamed(context, 'check',
+                      //     arguments: AlbumHomePage(
+                      //         itemTitle: albumHomePage!.itemTitle));
                     },
                   ),
                 ))

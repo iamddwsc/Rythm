@@ -144,13 +144,15 @@ class MyAudioHandler extends BaseAudioHandler
     final audioSource = newQueue.map(_createAudioSource);
 
     //await _playlist.clear();
-    await _playlist.removeRange(0, _playlist.length);
+    if (_playlist.length > 0) {
+      await _playlist.removeRange(0, _playlist.length);
+    }
 
     //await _playlist.insertAll(0, audioSource.toList());
     //await _playlist.addAll(audioSource.toList());
 
-    await _playlist.addAll(_itemsToSources(newQueue));
-
+    //await _playlist.addAll(_itemsToSources(newQueue));
+    await _playlist.addAll(audioSource.toList());
     //await _player.setAudioSource();
     print('------------aaa');
     //print('aaaaa current ${_player.hasPrevious}');

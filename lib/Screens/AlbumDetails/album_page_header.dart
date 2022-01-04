@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rythm/Models/album_homepage_model.dart';
+import 'package:rythm/Utils/calc_median_color.dart';
 import 'package:rythm/app_color.dart' as AppColors;
 
 class AlbumPageHeader extends StatefulWidget {
@@ -7,12 +8,15 @@ class AlbumPageHeader extends StatefulWidget {
       {Key? key,
       //required this.albumHomePage,
       required this.albumTitle,
-      required this.albumArtist})
+      required this.albumArtist,
+      required this.color})
       : super(key: key);
 
   //final AlbumHomePage? albumHomePage;
   final String albumTitle;
   final String albumArtist;
+  final Color color;
+  //final String urlImage;
 
   @override
   _AlbumPageHeaderState createState() => _AlbumPageHeaderState();
@@ -27,14 +31,19 @@ class _AlbumPageHeaderState extends State<AlbumPageHeader> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-            Colors.blue[200]!,
-            Colors.blue[100]!,
-            Colors.white,
+            // Colors.blue[200]!,
+            // Colors.blue[100]!,
+            // Colors.white,
+            // isLightColor(snapshot.data!)
+            //                 ? darken(snapshot.data!, .4)
+            //                 : lighten(snapshot.data!, 0.1),
+            lighten(widget.color, 0.4),
+            AppColors.white
           ],
               stops: [
             0.0,
-            0.7,
-            1.0
+            // 0.7,
+            0.9
           ])),
       child: Padding(
         padding: EdgeInsets.all(0.0),
@@ -63,9 +72,12 @@ class _AlbumPageHeaderState extends State<AlbumPageHeader> {
                   // widget.albumHomePage!.itemTitle ?? 'Null',
                   widget.albumTitle,
                   style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.white),
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w700,
+                    // color: isLightColor(widget.color)
+                    //     ? darken(widget.color, .4)
+                    //     : lighten(widget.color, 0.1)
+                  ),
                 ),
               ),
               Container(
@@ -74,26 +86,35 @@ class _AlbumPageHeaderState extends State<AlbumPageHeader> {
                 child: Text(
                   widget.albumArtist,
                   style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.white),
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500,
+                    // color: isLightColor(widget.color)
+                    //     ? darken(widget.color, .4)
+                    //     : lighten(widget.color, 0.1)
+                  ),
                 ),
               ),
               Row(
                 children: [
                   IconButton(
                       onPressed: null,
-                      icon:
-                          Icon(Icons.favorite_outline, color: AppColors.white)),
+                      icon: Icon(
+                        Icons.favorite_outline,
+                        color: Colors.black,
+                        // color: isLightColor(widget.color)
+                        //     ? darken(widget.color, .4)
+                        //     : lighten(widget.color, 0.1)
+                      )),
                   IconButton(
                       onPressed: null,
-                      icon: Icon(Icons.more_vert_outlined,
-                          color: AppColors.white)),
+                      icon: Icon(
+                        Icons.more_vert_outlined,
+                        color: Colors.black,
+                        // color: isLightColor(widget.color)
+                        //     ? darken(widget.color, .4)
+                        //     : lighten(widget.color, 0.1)
+                      )),
                   Expanded(child: Container()),
-                  // IconButton(
-                  //     onPressed: null,
-                  //     icon: Image.asset('assets/notification.png',
-                  //         height: 26.0, width: 26.0, color: AppColors.textColor))
                 ],
               )
             ],

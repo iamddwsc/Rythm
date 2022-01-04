@@ -44,8 +44,11 @@ dependencies:
   # flutter_slidable: ^1.1.0
   # slide_to_act: ^2.0.1
   image: ^3.1.0 # for calc average color
-  bitmap: ^0.1.2 # same above
+  # bitmap: ^0.1.2 # same above
   palette_generator: ^0.3.2
+  sliding_up_panel: ^2.0.0+1
+  flutter_downloader: ^1.7.1
+  permission_handler: ^8.3.0
   
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -82,24 +85,6 @@ flutter:
     - assets/
     - json/
   fonts:
-    - family: Gotham
-      fonts:
-        - asset: fonts/Gotham-Black-Italic.otf
-        - asset: fonts/Gotham-Black.otf
-        - asset: fonts/Gotham-Bold-Italic.otf
-        - asset: fonts/Gotham-Bold.otf
-        - asset: fonts/Gotham-Book-Italic.otf
-        - asset: fonts/Gotham-Book.otf
-        - asset: fonts/Gotham-Italic.otf
-        - asset: fonts/Gotham-Light-Italic.otf
-        - asset: fonts/Gotham-Light.otf
-        - asset: fonts/Gotham-Regular.otf
-        - asset: fonts/Gotham-Thin-Italic.otf
-        - asset: fonts/Gotham-Thin.otf
-        - asset: fonts/Gotham-Ultra-Italic.otf
-        - asset: fonts/Gotham-Ultra.otf
-        - asset: fonts/Gotham-XLight-Italic.otf
-        - asset: fonts/Gotham-Xlight.otf
     - family: OpenSans
       fonts:
         - asset: fonts/OpenSans-Bold.ttf
@@ -126,6 +111,34 @@ flutter:
           weight: 600
         - asset: fonts/OpenSans-SemiBoldItalic.ttf
           weight: 600
+    - family: Circular
+      fonts:
+        - asset: fonts/CircularStd-Black.otf
+          weight: 900
+        - asset: fonts/CircularStd-Bold.otf
+          weight: 700
+        # - asset: fonts/CircularStd-BoldItalic.otf
+        #   weight: 700
+        
+        # - asset: fonts/OpenSans-ExtraBoldItalic.ttf
+        #   weight: 800
+        - asset: fonts/CircularStd-Book.otf
+          weight: 400
+        # - asset: fonts/CircularStd-BookItalic.otf
+        #   weight: 400
+        - asset: fonts/CircularStd-Light.otf
+          weight: 300
+        # - asset: fonts/CircularStd-LightItalic.otf
+        #   weight: 300
+        - asset: fonts/CircularStd-Medium.otf
+          weight: 500
+        # - asset: fonts/CircularStd-MediumItalic.otf
+        #   weight: 500
+        
+        # - asset: fonts/OpenSans-SemiBold.ttf
+        #   weight: 600
+        # - asset: fonts/OpenSans-SemiBoldItalic.ttf
+        #   weight: 600
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

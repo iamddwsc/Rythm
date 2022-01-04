@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rythm/Models/album_details_model.dart';
+import 'package:rythm/Models/album_homepage_model.dart';
 import 'package:rythm/Screens/Player/player_screen.dart';
 import 'package:rythm/Services/audio_manager.dart';
 import 'package:rythm/Services/audio_service_impl.dart';
@@ -25,6 +27,10 @@ void main() async {
   await Hive.openBox<String>('currentPlayingAlbum');
   //await startService();
   await setupServiceLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+      );
   runApp(Rythm());
 }
 
@@ -55,11 +61,20 @@ class Rythm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme:
-          ThemeData(primaryColor: AppColors.background, fontFamily: 'OpenSans'),
+      theme: ThemeData(primaryColor: AppColors.white, fontFamily: 'Circular'),
       debugShowCheckedModeBanner: false,
       title: 'Rythm',
       home: Home(),
+      // onGenerateRoute: (settings) {
+      //   if (settings.name == 'check') {
+      //     final args = settings.arguments as AlbumHomePage;
+      //     return MaterialPageRoute(
+      //         settings: settings,
+      //         builder: (context) {
+      //           return Container(child: Text(args.itemTitle!));
+      //         });
+      //   }
+      // },
     );
   }
 }

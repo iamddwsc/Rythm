@@ -62,35 +62,41 @@ class SongAdapter extends TypeAdapter<Song> {
     return Song(
       songImage: fields[0] as String?,
       songTitle: fields[1] as String?,
-      songArtist: fields[2] as String?,
-      songOfAlbum: fields[3] as String?,
-      songDateRelease: fields[4] as String?,
-      mp3Url128: fields[5] as String?,
-      mp3Url320: fields[6] as String?,
-      mp3Url500: fields[7] as String?,
+      songSinger: fields[2] as String?,
+      songWriter: fields[3] as String?,
+      songOfAlbum: fields[4] as String?,
+      songDateRelease: fields[5] as String?,
+      mp3Url128: fields[6] as String?,
+      mp3Url320: fields[7] as String?,
+      mp3Url500: fields[8] as String?,
+      lossless: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Song obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.songImage)
       ..writeByte(1)
       ..write(obj.songTitle)
       ..writeByte(2)
-      ..write(obj.songArtist)
+      ..write(obj.songSinger)
       ..writeByte(3)
-      ..write(obj.songOfAlbum)
+      ..write(obj.songWriter)
       ..writeByte(4)
-      ..write(obj.songDateRelease)
+      ..write(obj.songOfAlbum)
       ..writeByte(5)
-      ..write(obj.mp3Url128)
+      ..write(obj.songDateRelease)
       ..writeByte(6)
-      ..write(obj.mp3Url320)
+      ..write(obj.mp3Url128)
       ..writeByte(7)
-      ..write(obj.mp3Url500);
+      ..write(obj.mp3Url320)
+      ..writeByte(8)
+      ..write(obj.mp3Url500)
+      ..writeByte(9)
+      ..write(obj.lossless);
   }
 
   @override

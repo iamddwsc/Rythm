@@ -30,7 +30,7 @@ class AudioManager {
 
   // Events: Calls coming from the UI
   void init() async {
-    loadPlaylist();
+    await loadPlaylist();
     _listenToChangesInPlaylist();
     _listenToPlaybackState();
     _listenToCurrentPosition();
@@ -57,20 +57,29 @@ class AudioManager {
     //final playlist;
     final mediaItems = playlist
         .map((song) => MediaItem(
-            id: song.songTitle!,
-            title: song.songTitle!,
-            artist: song.songArtist,
-            artUri: Uri.parse(song.songImage!),
-            album: song.songOfAlbum,
-            extras: {'url': song.mp3Url128}))
+                id: song.songTitle!,
+                title: song.songTitle!,
+                artist: song.songSinger!.toString(),
+                artUri: Uri.parse(song.songImage!),
+                album: song.songOfAlbum,
+                extras: {
+                  'url': song.mp3Url128,
+                  'mp3_url_128': song.mp3Url128,
+                  'mp3_url_320': song.mp3Url320,
+                  'mp3_url_500': song.mp3Url500,
+                  'lossless': song.lossless
+                }))
         .toList();
+
     //print(mediaItems.length);
-    _audioHandler.addQueueItems(mediaItems);
-    final index = Boxes.getPlayingIndex();
-    //index.put('myPlayingIndex', index.get('myPlayingIndex')! + 1);
-    var i = index.get('myPlayingIndex');
-    if (i != null) {
-      _audioHandler.skipToQueueItem(i);
+    if (mediaItems.length > 0) {
+      await _audioHandler.addQueueItems(mediaItems);
+      final index = Boxes.getPlayingIndex();
+      //index.put('myPlayingIndex', index.get('myPlayingIndex')! + 1);
+      var i = index.get('myPlayingIndex');
+      if (i != null) {
+        _audioHandler.skipToQueueItem(i);
+      }
     }
   }
 
@@ -81,21 +90,27 @@ class AudioManager {
     final oldPlayingAlbum = Boxes.getPlayingAlbum();
     final mediaItems = new_playlist
         .map((song) => MediaItem(
-            id: song.songTitle!,
-            title: song.songTitle!,
-            artist: song.songArtist,
-            artUri: Uri.parse(song.songImage!),
-            album: song.songOfAlbum,
-            extras: {'url': song.mp3Url128}))
+                id: song.songTitle!,
+                title: song.songTitle!,
+                artist: song.songSinger!.toString(),
+                artUri: Uri.parse(song.songImage!),
+                album: song.songOfAlbum,
+                extras: {
+                  'url': song.mp3Url128,
+                  'mp3_url_128': song.mp3Url128,
+                  'mp3_url_320': song.mp3Url320,
+                  'mp3_url_500': song.mp3Url500,
+                  'lossless': song.lossless
+                }))
         .toList();
     final old = oldPlayingAlbum.get('old');
     if (old == current) {
       _audioHandler.skipToQueueItem(index);
-      print('aaaaaa EQUAL: ${old} AND ${current}');
+      //print('aaaaaa EQUAL: ${old} AND ${current}');
     } else {
       await _audioHandler.updateQueue(mediaItems);
       await _audioHandler.skipToQueueItem(index);
-      print('aaaaaa NOT EQUAL: ${old} AND ${current}');
+      //print('aaaaaa NOT EQUAL: ${old} AND ${current}');
       oldPlayingAlbum.put('old', current);
     }
 
@@ -188,6 +203,11 @@ class AudioManager {
         'title': mediaItem!.title,
         'artist': mediaItem.artist,
         'artUri': mediaItem.artUri,
+        'album': mediaItem.album,
+        'mp3_url_128': mediaItem.extras!['mp3_url_128'],
+        'mp3_url_320': mediaItem.extras!['mp3_url_128'],
+        'mp3_url_500': mediaItem.extras!['mp3_url_128'],
+        'lossless': mediaItem.extras!['lossless']
       };
       // final index = Boxes.getPlayingIndex();
       // index.put('myPlayingIndex', index.get('myPlayingIndex')! + 1);
