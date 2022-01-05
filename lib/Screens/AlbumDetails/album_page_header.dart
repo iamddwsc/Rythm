@@ -43,7 +43,7 @@ class _AlbumPageHeaderState extends State<AlbumPageHeader> {
               stops: [
             0.0,
             // 0.7,
-            0.9
+            1.0
           ])),
       child: Padding(
         padding: EdgeInsets.all(0.0),

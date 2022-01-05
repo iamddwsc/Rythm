@@ -57,6 +57,10 @@ class Song {
   String? mp3Url500;
   @HiveField(9)
   String? lossless;
+  @HiveField(10)
+  String? main_url;
+
+  set mainUrl(String url) => main_url = url;
 
   Song(
       {this.songImage,
@@ -81,6 +85,7 @@ class Song {
     this.mp3Url320 = json["mp3_url_320"];
     this.mp3Url500 = json["mp3_url_500"];
     this.lossless = json["lossless"];
+    //this.main_url = json["main_url"];
   }
 
   Map<String, dynamic> toJson() {

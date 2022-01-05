@@ -70,13 +70,13 @@ class SongAdapter extends TypeAdapter<Song> {
       mp3Url320: fields[7] as String?,
       mp3Url500: fields[8] as String?,
       lossless: fields[9] as String?,
-    );
+    )..main_url = fields[10] as String?;
   }
 
   @override
   void write(BinaryWriter writer, Song obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.songImage)
       ..writeByte(1)
@@ -96,7 +96,9 @@ class SongAdapter extends TypeAdapter<Song> {
       ..writeByte(8)
       ..write(obj.mp3Url500)
       ..writeByte(9)
-      ..write(obj.lossless);
+      ..write(obj.lossless)
+      ..writeByte(10)
+      ..write(obj.main_url);
   }
 
   @override

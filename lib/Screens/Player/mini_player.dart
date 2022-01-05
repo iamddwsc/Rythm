@@ -82,7 +82,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
   Widget build(BuildContext context) {
     //final ImageProvider imgProvider;
     final AudioManager audioManager = GetIt.I<AudioManager>();
-    return FutureBuilder<Color>(
+    return FutureBuilder<List<Color>>(
         //initialData: Colors.transparent,
         future: getMedianColor(widget.info['artUri'].toString()),
         //future: getImagePalette(NetworkImage(widget.info['artUri'].toString())),
@@ -92,9 +92,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
             //print('OK2');
             return Container(
               decoration: BoxDecoration(
-                color: isLightColor(snapshot.data!)
-                    ? darken(snapshot.data!, .2)
-                    : lighten(snapshot.data!, .3),
+                color: isLightColor(snapshot.data![0])
+                    ? darken(snapshot.data![0], .2)
+                    : lighten(snapshot.data![0], .3),
               ),
               child: Column(
                 //crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +117,10 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               // Navigator.of(context).push(MaterialPageRoute(
                               //     builder: (context) => PlayerScreen()));
                               Navigator.of(context).push(CustomPageRoute(
-                                  child: PlayerScreen(myColor: snapshot.data!),
+                                  child: PlayerScreen(
+                                      myColor: snapshot.data![0],
+                                      mostColor: snapshot.data![1],
+                                      info: widget.info),
                                   direction: AxisDirection.up));
                             },
                             // onPanDown: (d) {

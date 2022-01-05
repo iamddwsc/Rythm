@@ -43,6 +43,7 @@ class DownloadPanel extends StatelessWidget {
       //From path_provider package
       var _localPath = dir.path + _name;
       final savedDir = Directory(_localPath);
+      //print('aaaa ${savedDir}');
       await savedDir.create(recursive: true).then((value) async {
         String? _taskid = await FlutterDownloader.enqueue(
           url: _url,
@@ -52,7 +53,7 @@ class DownloadPanel extends StatelessWidget {
           openFileFromNotification: true,
           saveInPublicStorage: true,
         );
-        print(_taskid);
+        //print(_taskid);
       });
     } else {
       print('Permission Denied');
@@ -167,7 +168,7 @@ class DownloadPanel extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     requestDownload(info['lossless'],
-                        info['title'] + info['artist'] + '.flac');
+                        info['title'] + ' - ' + info['artist'] + '.flac');
                   },
                   enableFeedback: false,
                   splashColor: Colors.transparent,
@@ -232,7 +233,10 @@ class DownloadPanel extends StatelessWidget {
               Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    requestDownload(info['mp3_url_128'],
+                        info['title'] + ' - ' + info['artist'] + '.mp3');
+                  },
                   enableFeedback: false,
                   splashColor: Colors.transparent,
                   child: Container(

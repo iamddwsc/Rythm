@@ -78,7 +78,7 @@ class MyAppSpace extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       isLightColor(color)
-                          ? darken(color, .4)
+                          ? darken(color, .3)
                           : lighten(color, 0.1),
                       lighten(color, 0.4)
                       //Color(0xFF121212)

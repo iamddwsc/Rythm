@@ -33,13 +33,14 @@ class AlbumDetails extends StatefulWidget {
 class _AlbumDetailsState extends State<AlbumDetails> {
   // final AlbumHomePage _albumHomePage = widget.albumHomePage;
   ScrollController _controller = new ScrollController();
+  final ScrollController _controllerLV = new ScrollController();
   Future<List<Album>>? data;
   List<Album>? albumList;
   late bool getPlayerFlag;
   //final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
   final box = Boxes.getPlaying();
   final myPlayingAlbumBox = Boxes.getPlayingAlbum();
-  Color? myColor;
+
   @override
   var top = 340.0;
   void initState() {
@@ -72,22 +73,6 @@ class _AlbumDetailsState extends State<AlbumDetails> {
       //print(sliderList);
       return albumList.map((e) => Album.fromJson(e)).toList();
     }
-  }
-
-  // Future<Color> getColor() {
-  //   Color? tempColor;
-  //   getMedianColor(widget.albumHomePage!.itemImage).then((value) {
-  //     print(value);
-  //     setState(() {
-  //       tempColor = value;
-  //     });
-  //   });
-  //   tempColor = isLightColor(tempColor!)
-  //       ? darken(tempColor!, 0.4)
-  //       : lighten(tempColor!, 0.2);
-  // }
-  void getColor() async {
-    myColor = await getMedianColor(widget.albumHomePage!.itemImage);
   }
 
   @override
@@ -127,22 +112,18 @@ class _AlbumDetailsState extends State<AlbumDetails> {
       top: top > 27.0 ? top : 27.0,
       right: 10.0,
       child: FloatingActionButton(
-        backgroundColor: Colors.blue[500],
-        elevation: 10.0,
-        onPressed: () => {
-          // if (albumList!.isNotEmpty) {box.add(albumList![0])}
-          //print(albumList!.length),
-          if (box.isNotEmpty) {box.deleteAll(box.keys)},
+          backgroundColor: Colors.blue[500],
+          elevation: 10.0,
+          onPressed: () => {
+                // if (albumList!.isNotEmpty) {box.add(albumList![0])}
+                //print(albumList!.length),
+                if (box.isNotEmpty) {box.deleteAll(box.keys)},
 
-          for (var item in albumList!) {box.add(item.song![0])},
-          //print(box.values.toList().length)
-        },
-        child: Icon(
-          Icons.play_arrow_rounded,
-          color: Colors.white,
-          size: 32.0,
-        ),
-      ),
+                for (var item in albumList!) {box.add(item.song![0])},
+                //print(box.values.toList().length)
+              },
+          child: Image.asset('assets/play2.png',
+              height: 18.0, width: 18.0, color: Colors.white)),
     );
   }
 
@@ -178,7 +159,7 @@ class _AlbumDetailsState extends State<AlbumDetails> {
               // ])),
               color: Colors.white,
             ),
-            child: FutureBuilder<Color>(
+            child: FutureBuilder<List<Color>>(
                 future: getMedianColor(widget.albumHomePage!.itemImage),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData || snapshot.hasError) {
@@ -191,6 +172,7 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                     );
                   }
                   return CustomScrollView(
+                    shrinkWrap: true,
                     controller: _controller,
                     slivers: <Widget>[
                       SliverAppBar(
@@ -203,87 +185,56 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                             title: widget.albumHomePage!.itemTitle!,
                             urlimage: widget.albumHomePage!.itemImage!,
                             albumArtist: widget.albumHomePage!.itemArtist!,
-                            color: snapshot.data!,
+                            color: snapshot.data![0],
                           ),
                         ),
                       ),
                       SliverToBoxAdapter(
-                          child: Container(
+                          child: Column(
+                        children: [
+                          AlbumPageHeader(
+                              albumTitle: widget.albumHomePage!.itemTitle!,
+                              albumArtist: widget.albumHomePage!.itemArtist!,
+                              color: snapshot.data![0]),
+                          FutureBuilder<List<Album>>(
+                              future: data,
+                              builder: (context, _snapshot) {
+                                if ((_snapshot.hasError) ||
+                                    (!_snapshot.hasData)) {
+                                  return Center(
+                                    child: Container(
+                                        height: 265.0,
+                                        child: Center(
+                                            child:
+                                                CircularProgressIndicator())),
+                                  );
+                                }
+                                //print(myColor);
+                                albumList = _snapshot.data;
 
-                              // decoration: BoxDecoration(
-                              //     //color: Colors.black,
-                              //     gradient: LinearGradient(
-                              //         begin: Alignment.topCenter,
-                              //         end: Alignment.bottomCenter,
-                              //         colors: [
-                              //       Colors.black.withOpacity(0.5),
-                              //       Colors.black
-                              //     ],
-                              //         stops: [
-                              //       0.0,
-                              //       1.0
-                              //     ])),
-                              //color: Colors.black,
-                              child: AlbumPageHeader(
-                                  albumTitle: widget.albumHomePage!.itemTitle!,
-                                  albumArtist:
-                                      widget.albumHomePage!.itemArtist!,
-                                  color: snapshot.data!))),
-                      FutureBuilder<List<Album>>(
-                          future: data,
-                          builder: (context, _snapshot) {
-                            if ((_snapshot.hasError) || (!_snapshot.hasData)) {
-                              return SliverToBoxAdapter(
-                                child: Center(
-                                  child: Container(
-                                      height: 265.0,
-                                      child: Center(
-                                          child: CircularProgressIndicator())),
-                                ),
-                              );
-                            }
-                            //print(myColor);
-                            albumList = _snapshot.data;
-
-                            return SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                              return SongItem(
-                                  album: albumList?[index],
-                                  index: index,
-                                  boxPlaying: box,
-                                  albumList: albumList,
-                                  current: widget.albumHomePage!.itemTitle!,
-                                  color: snapshot.data!);
-                            }, childCount: albumList!.length));
-                          }),
-                      // FutureBuilder<List<Album>>(
-                      //     future: data,
-                      //     builder: (context, snapshot) {
-                      //       if ((snapshot.hasError) || (!snapshot.hasData)) {
-                      //         return SliverToBoxAdapter(
-                      //           child: Container(
-                      //               height: 265.0,
-                      //               child:
-                      //                   Center(child: CircularProgressIndicator())),
-                      //         );
-                      //       }
-                      //       albumList = snapshot.data;
-                      //       return SliverList(
-                      //           delegate:
-                      //               SliverChildBuilderDelegate((context, index) {
-                      //         return SongItem(
-                      //             album: albumList?[index],
-                      //             index: index,
-                      //             boxPlaying: box,
-                      //             albumList: albumList);
-                      //       }, childCount: albumList!.length));
-                      //     }),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 125.0,
-                        ),
-                      )
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    controller: _controllerLV,
+                                    itemCount: albumList!.length,
+                                    itemBuilder: (context, index) {
+                                      return SongItem(
+                                          album: albumList?[index],
+                                          index: index,
+                                          boxPlaying: box,
+                                          albumList: albumList,
+                                          current:
+                                              widget.albumHomePage!.itemTitle!,
+                                          color: snapshot.data![0]);
+                                    });
+                              }),
+                          SizedBox(
+                            height: 70.0,
+                          )
+                        ],
+                      )),
                     ],
                   );
                 }),
@@ -332,8 +283,9 @@ class _SongItemState extends State<SongItem> {
       boxPlaying.deleteAll(widget.boxPlaying.keys);
     }
     for (var item in widget.albumList!) {
+      item.song![0].main_url = item.itemHref;
       boxPlaying.add(item.song![0]);
-      print('aaaaa ${item.song![0].lossless}');
+      // print('aaaaa ${item.song![0].lossless}');
     }
     //if (myPlayingAlbumBox.get('myPlayingAlbum') == "abc") {}
     await _audioManager.newPlaylist2(widget.index, widget.current);
@@ -351,17 +303,9 @@ class _SongItemState extends State<SongItem> {
           onTap: () {
             initPlaying();
             final boxIndex = Boxes.getPlayingIndex();
-            // final myPlayingAlbumBox = Boxes.getPlayingAlbum();
-            //print('aaaaaaaaa? ${widget.index}');
-            //print('Position ${boxIndex.get('myPlayingIndex')}');
             boxIndex.put('myPlayingIndex', widget.index);
-            //myPlayingAlbumBox.put('myPlayingAlbum', widget.myPlayingAlbum);
-            //print('index on click ${boxIndex.get('myPlayingIndex')}');
             setState(() {});
           },
-          // onTap: () {
-          //   notifyPa
-          // },
           child: Container(
             child: Row(
               children: [

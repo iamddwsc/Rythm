@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'dart:isolate';
 
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rythm/APIs/api.dart';
+import 'package:rythm/Models/lyrics.dart';
 import 'package:rythm/Screens/Player/download_panel.dart';
 import 'package:rythm/Screens/Player/panel_widget.dart';
 import 'package:rythm/Services/audio_manager.dart';
@@ -17,10 +20,18 @@ import 'package:rythm/Services/notifiers/repeat_button_notifier.dart';
 import 'package:rythm/Utils/calc_median_color.dart';
 import 'package:rythm/app_color.dart' as AppColors;
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:http/http.dart' as http;
 
 class PlayerScreen extends StatefulWidget {
-  const PlayerScreen({Key? key, required this.myColor}) : super(key: key);
+  const PlayerScreen(
+      {Key? key,
+      required this.myColor,
+      required this.mostColor,
+      required this.info})
+      : super(key: key);
   final Color myColor;
+  final Color mostColor;
+  final Map<dynamic, dynamic> info;
   @override
   _PlayerScreenState createState() => _PlayerScreenState();
 }
@@ -28,7 +39,9 @@ class PlayerScreen extends StatefulWidget {
 class _PlayerScreenState extends State<PlayerScreen> {
   final PanelController _pc = new PanelController();
   final PanelController _pc2 = new PanelController();
+  final ScrollController controller = new ScrollController();
   ReceivePort _port = ReceivePort();
+  var lyrics = ValueNotifier<List<dynamic>>([]);
 
   Future<bool> _onWillPop() async {
     if (_pc.isPanelOpen) {
@@ -42,47 +55,45 @@ class _PlayerScreenState extends State<PlayerScreen> {
     }
   }
 
-  // void _bindBackgroundIsolate() {
-  //   bool isSuccess = IsolateNameServer.registerPortWithName(
-  //       _port.sendPort, 'downloader_send_port');
-  //   if (!isSuccess) {
-  //     _unbindBackgroundIsolate();
-  //     _bindBackgroundIsolate();
-  //     return;
-  //   }
-  //   _port.listen((dynamic data) {
-  //     String id = data[0];
-  //     DownloadTaskStatus status = data[1];
-  //     int progress = data[2];
-  //     setState(() {});
-  //   });
+  void getLyrics(String url) async {
+    final temp = await fetchLyrics(url);
+    lyrics.value = temp;
+    //print('aaaaaa test ${lyrics.runtimeType}');
+  }
+
+  Future fetchLyrics(String url_info) async {
+    final response = await http.post(
+        Uri.parse(RythmAPI().API + RythmAPI().LYRIC),
+        body: jsonEncode(_getData(url_info)),
+        headers: _setHeaders());
+
+    final String jsonBody = response.body;
+    final int statusCode = response.statusCode;
+    if (statusCode != 200 || jsonBody == null) {
+      print(response.reasonPhrase);
+      throw new Exception("Lỗi load api");
+    } else {
+      final JsonDecoder _decoder = new JsonDecoder();
+      final useListContainer = _decoder.convert(jsonBody);
+      final List lyrics = useListContainer['data'];
+      return lyrics;
+    }
+  }
+  // Future<List<String>> fetchLyrics(String url_info) async {
+  //   final List<String> abc = ['test'];
+  //   return abc;
   // }
 
-  // static void downloadCallback(
-  //     String id, DownloadTaskStatus status, int progress) {
-  //   final SendPort? send =
-  //       IsolateNameServer.lookupPortByName('downloader_send_port');
-  //   send!.send([id, status, progress]);
-  // }
+  _getData(String url_info) {
+    var data = {'url_info': url_info};
+    return data;
+  }
 
-  // void _unbindBackgroundIsolate() {
-  //   IsolateNameServer.removePortNameMapping('downloader_send_port');
-  // }
+  _setHeaders() => {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+      };
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   _bindBackgroundIsolate();
-  //   FlutterDownloader.registerCallback(downloadCallback);
-  // }
-
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   super.dispose();
-  //   _unbindBackgroundIsolate();
-  // }
   @override
   void initState() {
     super.initState();
@@ -97,6 +108,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     });
 
     FlutterDownloader.registerCallback(downloadCallback);
+    getLyrics(widget.info['main_url']);
   }
 
   @override
@@ -112,6 +124,18 @@ class _PlayerScreenState extends State<PlayerScreen> {
     send.send([id, status, progress]);
   }
 
+  Widget lyricWidget(String txt) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 5.0),
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: Text(txt,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.w900)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final AudioManager audioManager = GetIt.I<AudioManager>();
@@ -124,6 +148,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
             body: ValueListenableBuilder(
                 valueListenable: audioManager.currentSongNotifier,
                 builder: (context, Map<dynamic, dynamic> info, _) {
+                  getLyrics(info['main_url']);
                   return SlidingUpPanel(
                     maxHeight: MediaQuery.of(context).size.height * 0.5,
                     minHeight: 0.0,
@@ -162,11 +187,18 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 fit: BoxFit.cover)),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(
-                            sigmaX: 8,
-                            sigmaY: 8,
+                            sigmaX: 15,
+                            sigmaY: 15,
                           ),
                           child: Container(
-                            color: widget.myColor.withOpacity(0.4),
+                            //color: widget.myColor.withOpacity(0.5),
+                            //         color: isLightColor(snapshot.data![0])
+                            // ? darken(snapshot.data![0], .2)
+                            // : lighten(snapshot.data![0], .3)
+                            color: isLightColor(widget.mostColor)
+                                ? darken(widget.mostColor, .2).withOpacity(0.4)
+                                : lighten(widget.mostColor, .3)
+                                    .withOpacity(0.4),
                             child: SingleChildScrollView(
                               child: Container(
                                 // decoration: BoxDecoration(
@@ -252,7 +284,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                         )
                                       ],
                                     ),
-                                    SizedBox(height: 10.0),
+                                    SizedBox(height: 8.0),
                                     Container(
                                       margin: EdgeInsets.all(10.0),
                                       padding: EdgeInsets.all(10.0),
@@ -263,7 +295,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                           fit: BoxFit.cover),
                                     ),
                                     SizedBox(
-                                      height: 20.0,
+                                      height: 18.0,
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(
@@ -371,8 +403,198 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 500.0,
-                                    )
+                                      height: 15.0,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          left: 15.0, right: 15.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          FavoriteButton(
+                                              myColor: widget.myColor),
+                                          Share(
+                                            test: widget.info['main_url'],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Builder(builder: (context) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            top: 15.0, left: 20.0, right: 20.0),
+                                        //height: 320.0,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            color: isLightColor(
+                                                    widget.mostColor)
+                                                ? darken(widget.mostColor, .2)
+                                                : lighten(
+                                                    widget.mostColor, .3)),
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(
+                                              15.0, 5.0, 15.0, 15.0),
+                                          child: ValueListenableBuilder(
+                                              valueListenable: lyrics,
+                                              builder: (context,
+                                                  List<dynamic> data, _) {
+                                                if (data.isNotEmpty &&
+                                                    data.length > 2) {
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            'Lyrics',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                          ),
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: 8.0),
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50.0),
+                                                              child: Container(
+                                                                height: 30.0,
+                                                                width: 30.0,
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.25),
+                                                                child: IconButton(
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            0.0),
+                                                                    onPressed:
+                                                                        () {},
+                                                                    icon: Image.asset(
+                                                                        'assets/expand.png',
+                                                                        height:
+                                                                            13.0,
+                                                                        width:
+                                                                            13.0,
+                                                                        color: Colors
+                                                                            .white)),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20.0,
+                                                      ),
+                                                      Container(
+                                                          child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          lyricWidget(data[1]),
+                                                          lyricWidget(data[2]),
+                                                          lyricWidget(data[3]),
+                                                          lyricWidget(data[4]),
+                                                          lyricWidget(data[5]),
+                                                          lyricWidget(data[6]),
+                                                          lyricWidget(data[7])
+                                                        ],
+                                                      )),
+
+                                                      SizedBox(height: 25.0),
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                              child:
+                                                                  Container()),
+                                                          Container(
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(
+                                                                    25.0,
+                                                                    5.0,
+                                                                    25.0,
+                                                                    5.0),
+                                                            width: 111.5,
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    width: 0.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            30.0)),
+                                                            child: Row(
+                                                              children: [
+                                                                Image.asset(
+                                                                  'assets/share2.png',
+                                                                  height: 12.0,
+                                                                  width: 12.0,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 10.0,
+                                                                ),
+                                                                Text(
+                                                                  'Share',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          14.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w900),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5.0,
+                                                      )
+                                                      //Positioned(child: IconButton(icon: Icon(Icons),))
+                                                    ],
+                                                  );
+                                                } else
+                                                  return Container(
+                                                    height: 100.0,
+                                                    margin: EdgeInsets.only(
+                                                        top: 10.0),
+                                                    child: Text(
+                                                      'This song has no lyrics',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15.0,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                  );
+                                              }),
+                                        ),
+                                      );
+                                    }),
+                                    SizedBox(height: 50.0)
                                   ],
                                 ),
                               ),
@@ -409,8 +631,8 @@ class FavoriteButton extends StatelessWidget {
           // )),
           icon: Image.asset(
             'assets/heart2.png',
-            height: 26.0,
-            width: 26.0,
+            height: 24.0,
+            width: 24.0,
             // color: isLightColor(myColor)
             //     ? darken(myColor, .2)
             //     : lighten(myColor, .3)
@@ -432,7 +654,8 @@ class AudioProgresssBar extends StatelessWidget {
         return ProgressBar(
           barHeight: 3.0,
           timeLabelLocation: TimeLabelLocation.below,
-          timeLabelTextStyle: TextStyle(color: Colors.white, fontSize: 14.0),
+          timeLabelTextStyle: TextStyle(
+              color: Colors.white, fontSize: 13.5, fontWeight: FontWeight.w500),
           // thumbGlowRadius: 0.0,
           // thumbGlowColor: Colors.black,
           progress: value.current,
@@ -619,6 +842,32 @@ class ShuffleButton extends StatelessWidget {
           onPressed: audioManager.shuffle,
         );
       },
+    );
+  }
+}
+
+class Share extends StatelessWidget {
+  const Share({Key? key, required this.test}) : super(key: key);
+  final String test;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 32.0,
+      width: 32.0,
+      //padding: EdgeInsets.all(5.0),
+      child: IconButton(
+          padding: const EdgeInsets.all(0.0),
+          onPressed: () {
+            //print('aaaaaaaaab ${test}');
+          },
+          //iconSize: 24.0,
+          icon: Image.asset(
+            'assets/share2.png',
+            height: 19.0,
+            width: 19.0,
+            color: Colors.white,
+          )),
+      //icon: Icon(Icons.share)),
     );
   }
 }

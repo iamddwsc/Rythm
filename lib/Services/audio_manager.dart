@@ -67,7 +67,8 @@ class AudioManager {
                   'mp3_url_128': song.mp3Url128,
                   'mp3_url_320': song.mp3Url320,
                   'mp3_url_500': song.mp3Url500,
-                  'lossless': song.lossless
+                  'lossless': song.lossless,
+                  'main_url': song.main_url
                 }))
         .toList();
 
@@ -100,7 +101,8 @@ class AudioManager {
                   'mp3_url_128': song.mp3Url128,
                   'mp3_url_320': song.mp3Url320,
                   'mp3_url_500': song.mp3Url500,
-                  'lossless': song.lossless
+                  'lossless': song.lossless,
+                  'main_url': song.main_url
                 }))
         .toList();
     final old = oldPlayingAlbum.get('old');
@@ -207,7 +209,8 @@ class AudioManager {
         'mp3_url_128': mediaItem.extras!['mp3_url_128'],
         'mp3_url_320': mediaItem.extras!['mp3_url_128'],
         'mp3_url_500': mediaItem.extras!['mp3_url_128'],
-        'lossless': mediaItem.extras!['lossless']
+        'lossless': mediaItem.extras!['lossless'],
+        'main_url': mediaItem.extras!['main_url']
       };
       // final index = Boxes.getPlayingIndex();
       // index.put('myPlayingIndex', index.get('myPlayingIndex')! + 1);

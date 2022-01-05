@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.rythm">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission
     android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
       android:minSdkVersion="30"/>
@@ -11,7 +11,8 @@
     <application
         android:usesCleartextTraffic="true"
         android:label="rythm"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
         <provider
           android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
           android:authorities="${applicationId}.flutter_downloader.provider"

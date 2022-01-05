@@ -8,11 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:palette_generator/palette_generator.dart';
 
-Future<Color> getMedianColor(url) async {
+Future<List<Color>> getMedianColor(url) async {
   // img.Image? bitmap =
   //     img.decodeImage(new File('assets/images/keyboard.jpg').readAsBytesSync());
-  var bytes =
-      (await NetworkAssetBundle(Uri.parse(url)).load(url)).buffer.asUint8List();
+  var bytesOri = (await NetworkAssetBundle(Uri.parse(url)).load(url));
+  var bytes = bytesOri.buffer.asUint8List();
   img.Image? bitmap = img.decodeImage(bytes);
   // Bitmap bitmap = await Bitmap.fromProvider(NetworkImage(url));
 
@@ -31,10 +31,22 @@ Future<Color> getMedianColor(url) async {
       blueBucket += img.getBlue(c);
     }
   }
+  var encodeImg =
+      EncodedImage(bytesOri, width: bitmap.width, height: bitmap.height);
+  final PaletteGenerator paletteGenerator =
+      await PaletteGenerator.fromImageProvider(MemoryImage(bytes));
+
+  List<Color> myColor = [];
 
   Color averageColor = Color.fromRGBO(redBucket ~/ pixelCount,
       greenBucket ~/ pixelCount, blueBucket ~/ pixelCount, 1);
-  return averageColor;
+
+  myColor.add(averageColor);
+  myColor.add(paletteGenerator
+      .paletteColors[paletteGenerator.paletteColors.length ~/ 2 + 1].color);
+  // .paletteColors[paletteGenerator.paletteColors.length - 1]
+  // .color);
+  return myColor;
 }
 
 Future<Color> getImagePalette(ImageProvider imageProvider) async {
@@ -57,19 +69,10 @@ Color lighten(Color color, [double amount = .1]) {
 
   final hsl = HSLColor.fromColor(color);
   final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
-
   return hslLight.toColor();
 }
 
 bool isLightColor(Color color) {
-  // final grayscale =
-  //     (0.299 * color.red) + (0.587 * color.green) + (0.114 * color.blue);
-  // print(grayscale);
-  // if (grayscale < 128) {
-  //   return true;
-  // } else {
-  //   return false;
-  // }
   final hsp = math.sqrt(0.299 * (color.red * color.red) +
       0.587 * (color.green * color.green) +
       0.114 * (color.blue * color.blue));
@@ -79,3 +82,8 @@ bool isLightColor(Color color) {
     return false;
   }
 }
+
+// Color getSimilarColor(Color color) {
+//   final similars = [Colors.]
+//   final hsl = HSLColor.fromColor(color);
+// }

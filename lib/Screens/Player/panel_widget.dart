@@ -21,7 +21,7 @@ class PanelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: controller,
+      //controller: controller,
       child: Container(
         decoration: BoxDecoration(
             // gradient: LinearGradient(
