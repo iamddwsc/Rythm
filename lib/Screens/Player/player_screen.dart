@@ -27,10 +27,12 @@ class PlayerScreen extends StatefulWidget {
       {Key? key,
       required this.myColor,
       required this.mostColor,
+      required this.mostColor2,
       required this.info})
       : super(key: key);
   final Color myColor;
   final Color mostColor;
+  final Color mostColor2;
   final Map<dynamic, dynamic> info;
   @override
   _PlayerScreenState createState() => _PlayerScreenState();
@@ -144,6 +146,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
       child: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
+            resizeToAvoidBottomInset: false,
             //appBar: AppBar(),
             body: ValueListenableBuilder(
                 valueListenable: audioManager.currentSongNotifier,
@@ -195,34 +198,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             //         color: isLightColor(snapshot.data![0])
                             // ? darken(snapshot.data![0], .2)
                             // : lighten(snapshot.data![0], .3)
-                            color: isLightColor(widget.mostColor)
-                                ? darken(widget.mostColor, .2).withOpacity(0.4)
-                                : lighten(widget.mostColor, .3)
+                            color: isLightColor(widget.mostColor2)
+                                ? darken(widget.mostColor2, .2).withOpacity(0.4)
+                                : lighten(widget.mostColor2, .3)
                                     .withOpacity(0.4),
                             child: SingleChildScrollView(
                               child: Container(
-                                // decoration: BoxDecoration(
-                                //     gradient: LinearGradient(
-                                //         begin: Alignment.topCenter,
-                                //         end: Alignment.bottomCenter,
-                                //         colors: [
-                                //       // Colors.blue[200]!,
-                                //       // Colors.blue[100]!,
-                                //       // Colors.white,
-                                //       // isLightColor(snapshot.data!)
-                                //       //                 ? darken(snapshot.data!, .4)
-                                //       //                 : lighten(snapshot.data!, 0.1),
-                                //       // lighten(widget.myColor, 0.4),
-                                //       isLightColor(widget.myColor)
-                                //           ? darken(widget.myColor, .2)
-                                //           : lighten(widget.myColor, .3),
-                                //       AppColors.white
-                                //     ],
-                                //         stops: [
-                                //       0.0,
-                                //       // 0.7,
-                                //       0.55
-                                //     ])),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -532,7 +513,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                                                     5.0,
                                                                     25.0,
                                                                     5.0),
-                                                            width: 111.5,
+                                                            width: 115.0,
                                                             decoration: BoxDecoration(
                                                                 border: Border.all(
                                                                     color: Colors

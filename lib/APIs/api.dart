@@ -1,5 +1,5 @@
 class RythmAPI {
-  final String API = 'http://192.168.0.109';
+  final String API = 'http://192.168.0.12';
   final String SLIDER = '/api/slider';
   final String ALBUM = '/api/album';
   final String CHART = '/api/chart';

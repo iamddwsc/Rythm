@@ -8,6 +8,7 @@ import 'package:rythm/Models/album_details_model.dart';
 import 'package:rythm/Models/boxes.dart';
 import 'package:rythm/Screens/BottomNavBarSupport/tab_navigator.dart';
 import 'package:rythm/Screens/Player/mini_player.dart';
+import 'package:rythm/Search/search_page.dart';
 import 'package:rythm/Services/audio_manager.dart';
 import 'package:rythm/Utils/calc_median_color.dart';
 import 'package:rythm/app_color.dart' as AppColors;
@@ -25,6 +26,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController? _tabController;
   String daySession = "Chào buổi sáng";
 
+  TimeOfDay now = TimeOfDay.now();
+
+  getTime() {
+    if (now.hour >= 0 && now.hour <= 10) {
+      daySession = "Chào buổi sáng";
+    } else if (now.hour > 10 && now.hour < 13) {
+      daySession = "Chào buổi trưa";
+    } else if (now.hour >= 13 && now.hour <= 18) {
+      daySession = "Chào buổi chiều";
+    } else {
+      daySession = "Chào buổi tối";
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -33,6 +48,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     GetIt.I<AudioManager>().init();
     _tabController = TabController(length: 3, vsync: this);
     _scrollController = ScrollController();
+    getTime();
     // Hive.openBox<List<Song>>('playing');
   }
 
@@ -54,6 +70,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   void _selectTab(String tabItem, int index) {
+    print(index);
+    if (index != 1) {
+      // _navigatorKeys["Page2"]!.currentState!.pushReplacement(MaterialPageRoute(
+      //     maintainState: false, builder: (context) => SearchPage()));
+      _navigatorKeys["Page2"]!.currentState!.maybePop();
+    }
     if (tabItem == _currentPage) {
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {
@@ -84,6 +106,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             return isFirstRouteInCurrentTab;
           },
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             extendBody: true,
             body: Container(
               // decoration: BoxDecoration(
@@ -101,21 +124,21 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               //       //0.25,
               //       0.25
               //     ])),
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                    Colors.blue[300]!,
-                    //Colors.black.withOpacity(0.9),
-                    //Color(0xFF121212)
-                    Colors.white
-                  ],
-                      stops: [
-                    0.0,
-                    //0.25,
-                    0.25
-                  ])),
+              // decoration: BoxDecoration(
+              //     gradient: LinearGradient(
+              //         begin: Alignment.topLeft,
+              //         end: Alignment.bottomRight,
+              //         colors: [
+              //       Colors.blue[300]!,
+              //       //Colors.black.withOpacity(0.9),
+              //       //Color(0xFF121212)
+              //       Colors.white
+              //     ],
+              //         stops: [
+              //       0.0,
+              //       //0.25,
+              //       0.25
+              //     ])),
               child: Stack(
                 children: <Widget>[
                   _buildOffstageNavigator("Page1"),
@@ -308,6 +331,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: TabNavigator(
         navigatorKey: _navigatorKeys[tabItem],
         tabItem: tabItem,
+        daySession: daySession,
       ),
     );
   }

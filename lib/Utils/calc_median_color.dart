@@ -44,8 +44,14 @@ Future<List<Color>> getMedianColor(url) async {
   myColor.add(averageColor);
   myColor.add(paletteGenerator
       .paletteColors[paletteGenerator.paletteColors.length ~/ 2 + 1].color);
+  //myColor.add(paletteGenerator.mutedColor!.color);
   // .paletteColors[paletteGenerator.paletteColors.length - 1]
   // .color);
+  myColor.add(paletteGenerator
+      .paletteColors[paletteGenerator.paletteColors.length > 4
+          ? paletteGenerator.paletteColors.length - 4
+          : paletteGenerator.paletteColors.length - 1]
+      .color);
   return myColor;
 }
 

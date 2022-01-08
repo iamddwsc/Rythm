@@ -154,7 +154,7 @@ class MyAudioHandler extends BaseAudioHandler
     //await _playlist.addAll(_itemsToSources(newQueue));
     await _playlist.addAll(audioSource.toList());
     //await _player.setAudioSource();
-    print('------------aaa');
+    //print('------------aaa');
     //print('aaaaa current ${_player.hasPrevious}');
 
     // //this.queue.value.removeRange(0, queue.value.length);
@@ -169,6 +169,19 @@ class MyAudioHandler extends BaseAudioHandler
 
     // _player.currentIndexStream.first
     //     .then((value) => print('aaaaaaaaaa ${value}'));
+  }
+
+  @override
+  Future<void> insertQueueItem(int index, MediaItem mediaItem) async {
+    // manage Just Audio
+    final audioSource = _createAudioSource(mediaItem);
+    _playlist.insert(index, audioSource);
+
+    // notify system
+    final newQueue = queue.value..add(mediaItem);
+    queue.add(newQueue);
+
+    //queue.add(queue.nvalue!..insert(index, mediaItem));
   }
 
   @override

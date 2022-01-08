@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rythm/Screens/home_page.dart';
 import 'package:rythm/Screens/local_songs.dart';
-import 'package:rythm/Screens/search_page.dart';
+import 'package:rythm/Search/search_page.dart';
 import 'package:rythm/screens/home.dart';
 
 class CupertinoStoreHomePage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _CupertinoStoreHomePageState extends State<CupertinoStoreHomePage> {
   Widget build(BuildContext context) {
     final listOfKeys = [firstTabNavKey, secondTabNavKey, thirdTabNavKey];
 
-    List homeScreenList = [HomePage(), SearchPage(), LocalSongsPage()];
+    List homeScreenList = [SearchPage(), LocalSongsPage()];
     return CupertinoApp(
       debugShowCheckedModeBanner: false,
       home: WillPopScope(

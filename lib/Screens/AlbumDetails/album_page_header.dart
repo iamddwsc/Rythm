@@ -72,12 +72,13 @@ class _AlbumPageHeaderState extends State<AlbumPageHeader> {
                   // widget.albumHomePage!.itemTitle ?? 'Null',
                   widget.albumTitle,
                   style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w700,
-                    // color: isLightColor(widget.color)
-                    //     ? darken(widget.color, .4)
-                    //     : lighten(widget.color, 0.1)
-                  ),
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textColor
+                      // color: isLightColor(widget.color)
+                      //     ? darken(widget.color, .4)
+                      //     : lighten(widget.color, 0.1)
+                      ),
                 ),
               ),
               Container(
@@ -86,34 +87,33 @@ class _AlbumPageHeaderState extends State<AlbumPageHeader> {
                 child: Text(
                   widget.albumArtist,
                   style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500,
-                    // color: isLightColor(widget.color)
-                    //     ? darken(widget.color, .4)
-                    //     : lighten(widget.color, 0.1)
-                  ),
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textColor
+                      // color: isLightColor(widget.color)
+                      //     ? darken(widget.color, .4)
+                      //     : lighten(widget.color, 0.1)
+                      ),
                 ),
               ),
               Row(
                 children: [
                   IconButton(
                       onPressed: null,
-                      icon: Icon(
-                        Icons.favorite_outline,
-                        color: Colors.black,
-                        // color: isLightColor(widget.color)
-                        //     ? darken(widget.color, .4)
-                        //     : lighten(widget.color, 0.1)
-                      )),
+                      icon: Icon(Icons.favorite_outline,
+                          color: AppColors.textColor
+                          // color: isLightColor(widget.color)
+                          //     ? darken(widget.color, .4)
+                          //     : lighten(widget.color, 0.1)
+                          )),
                   IconButton(
                       onPressed: null,
-                      icon: Icon(
-                        Icons.more_vert_outlined,
-                        color: Colors.black,
-                        // color: isLightColor(widget.color)
-                        //     ? darken(widget.color, .4)
-                        //     : lighten(widget.color, 0.1)
-                      )),
+                      icon: Icon(Icons.more_vert_outlined,
+                          color: AppColors.textColor
+                          // color: isLightColor(widget.color)
+                          //     ? darken(widget.color, .4)
+                          //     : lighten(widget.color, 0.1)
+                          )),
                   Expanded(child: Container()),
                 ],
               )

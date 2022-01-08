@@ -132,7 +132,7 @@ class MyAppSpace extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 18.0,
+              top: 18.5,
               left: 50.0,
               width: MediaQuery.of(context).size.width * 0.7,
               child: Opacity(
@@ -150,7 +150,7 @@ class MyAppSpace extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                               // color: isLightColor(snapshot.data!)
                               //     ? darken(snapshot.data!, .4)
-                              color: lighten(color, 0.5))),
+                              color: Colors.white)),
                     )
                   ],
                 ),

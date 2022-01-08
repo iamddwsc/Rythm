@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get_it/get_it.dart';
@@ -61,7 +62,9 @@ class Rythm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: AppColors.white, fontFamily: 'Circular'),
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
+      theme: ThemeData(primaryColor: Colors.black, fontFamily: 'Circular'),
       debugShowCheckedModeBanner: false,
       title: 'Rythm',
       home: Home(),

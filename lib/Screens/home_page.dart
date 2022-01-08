@@ -10,11 +10,10 @@ import 'package:rythm/app_color.dart' as AppColors;
 import 'package:rythm/Models/slider_info_model.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
+  const HomePage({Key? key, required this.daySession}) : super(key: key);
+  final String daySession;
 
-  final String daySession = "Chào buổi chiều";
+  //final String daySession = "Chào buổi chiều";
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class HomePage extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(bottom: 10.0),
+                    //padding: EdgeInsets.only(bottom: 5.0),
                     child: Text(daySession,
                         style: TextStyle(
                             fontSize: 28,

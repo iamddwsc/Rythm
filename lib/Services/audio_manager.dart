@@ -271,16 +271,57 @@ class AudioManager {
     }
   }
 
-  Future<void> add() async {
-    final songRepository = GetIt.I<PlaylistRepository>();
-    final song = await songRepository.fetchAnotherSong();
+  Future<void> add(Song song) async {
+    // final songRepository = GetIt.I<PlaylistRepository>();
+    // final song = await songRepository.fetchAnotherSong();
+    // final mediaItem = MediaItem(
+    //   id: song['id'] ?? '',
+    //   album: song['album'] ?? '',
+    //   title: song['title'] ?? '',
+    //   extras: {'url': song['url']},
+    // );
     final mediaItem = MediaItem(
-      id: song['id'] ?? '',
-      album: song['album'] ?? '',
-      title: song['title'] ?? '',
-      extras: {'url': song['url']},
-    );
+        id: song.songTitle!,
+        title: song.songTitle!,
+        artist: song.songSinger!.toString(),
+        artUri: Uri.parse(song.songImage!),
+        album: song.songOfAlbum,
+        extras: {
+          'url': song.mp3Url128,
+          'mp3_url_128': song.mp3Url128,
+          'mp3_url_320': song.mp3Url320,
+          'mp3_url_500': song.mp3Url500,
+          'lossless': song.lossless,
+          'main_url': song.main_url
+        });
     _audioHandler.addQueueItem(mediaItem);
+  }
+
+  Future<void> addNext(Song song) async {
+    // final songRepository = GetIt.I<PlaylistRepository>();
+    // final song = await songRepository.fetchAnotherSong();
+    // final mediaItem = MediaItem(
+    //   id: song['id'] ?? '',
+    //   album: song['album'] ?? '',
+    //   title: song['title'] ?? '',
+    //   extras: {'url': song['url']},
+    // );
+    final mediaItem = MediaItem(
+        id: song.songTitle!,
+        title: song.songTitle!,
+        artist: song.songSinger!.toString(),
+        artUri: Uri.parse(song.songImage!),
+        album: song.songOfAlbum,
+        extras: {
+          'url': song.mp3Url128,
+          'mp3_url_128': song.mp3Url128,
+          'mp3_url_320': song.mp3Url320,
+          'mp3_url_500': song.mp3Url500,
+          'lossless': song.lossless,
+          'main_url': song.main_url
+        });
+    _audioHandler.insertQueueItem(1, mediaItem);
+    //_audioHandler.updateQueue(_audioHandler.queue.value);
   }
 
   void remove() {

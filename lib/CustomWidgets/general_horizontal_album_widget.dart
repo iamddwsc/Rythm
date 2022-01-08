@@ -127,10 +127,12 @@ class HorizontalAlbumWidget extends StatelessWidget {
                     child: Text(
                       albumHomePage!.itemArtist ?? "Null",
                       style: TextStyle(
-                        color: AppColors.subTextColor,
+                        color: AppColors.textColor,
                         fontSize: 15.0,
                         fontWeight: FontWeight.w400,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),

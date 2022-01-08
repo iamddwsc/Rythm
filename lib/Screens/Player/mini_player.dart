@@ -26,57 +26,6 @@ class MiniPlayer extends StatefulWidget {
   _MiniPlayerState createState() => _MiniPlayerState();
 }
 
-// class _MiniPlayerState extends State<MiniPlayer> {
-//   @override
-//   Widget build(BuildContext context) {
-//     //final ImageProvider imgProvider;
-//     final AudioManager audioManager = GetIt.I<AudioManager>();
-//     return Container(
-//       //height: 55.0,
-//       //decoration: BoxDecoration(color: ),
-//       child: ValueListenableBuilder(
-//           valueListenable: audioManager.currentSongNotifier,
-//           builder: (context, Map<dynamic, dynamic> info, _) {
-//             //Color color = info['medianColor'];
-//             //final playing = box.values.toList().cast<List<Song>>();
-//             //final List<Song> playing = box.values.toList();
-//             //final playing = box.values.toList().cast<List<Song>>();
-//             //print(playing[0].length);
-//             return FutureBuilder<Color>(
-//                 future: getMedianColor(info['artUri'].toString()),
-//                 // future:
-//                 //     getImagePalette(NetworkImage(info['artUri'].toString())),
-//                 builder: (context, snapshot) {
-//                   if (snapshot.hasData) {
-//                     return Container(
-//                       decoration: BoxDecoration(color: snapshot.data),
-//                       child: Column(
-//                         //crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Container(
-//                             height: 57.0,
-//                             child: CurrentSong(),
-//                           ),
-//                           Container(
-//                             //decoration: BoxDecoration(color: widget.medianColor),
-//                             //height: 3.0,
-//                             child: SizedBox(
-//                                 //height: 2.0,
-//                                 width: MediaQuery.of(context).size.width * 0.96,
-//                                 child: AudioProgresssBar()),
-//                           )
-//                         ],
-//                       ),
-//                     );
-//                   } else {
-//                     return Container();
-//                   }
-//                 });
-//           }),
-//     );
-//   }
-// }
-
 class _MiniPlayerState extends State<MiniPlayer> {
   @override
   Widget build(BuildContext context) {
@@ -120,6 +69,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                   child: PlayerScreen(
                                       myColor: snapshot.data![0],
                                       mostColor: snapshot.data![1],
+                                      mostColor2: snapshot.data![2],
                                       info: widget.info),
                                   direction: AxisDirection.up));
                             },
@@ -373,75 +323,3 @@ class CurrentSong extends StatelessWidget {
         });
   }
 }
-
-// class CurrentSong extends StatelessWidget {
-//   const CurrentSong({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final AudioManager audioManager = GetIt.I<AudioManager>();
-//     return ValueListenableBuilder(
-//         valueListenable: audioManager.currentSongNotifier,
-//         builder: (_, Map<dynamic, dynamic> info, __) {
-//           //print(info);
-//           return Row(
-//             children: [
-//               Container(
-//                   padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
-//                   decoration:
-//                       BoxDecoration(borderRadius: BorderRadius.circular(5.0)),
-//                   child: CachedNetworkImage(
-//                     imageUrl: info['artUri'].toString(),
-//                     fit: BoxFit.cover,
-//                   )),
-//               GestureDetector(
-//                 behavior: HitTestBehavior.translucent,
-//                 onTap: () {
-//                   Navigator.of(context).push(
-//                       MaterialPageRoute(builder: (context) => PlayerScreen()));
-//                 },
-//                 // onPanDown: (d) {
-//                 //   x1Prev = x1;
-//                 //   y1Prev = y1;
-//                 // },
-//                 // onPanUpdate: ,
-//                 // onHorizontalDragEnd: (DragEndDetails) {
-//                 //   //audioManager.next();
-//                 //   // final boxIndex = Boxes.getPlayingIndex();
-//                 //   // boxIndex.put('myPlayingIndex', widget.index + 1);
-//                 // },
-//                 child: Container(
-//                   width: MediaQuery.of(context).size.width * 0.5,
-//                   padding: EdgeInsets.only(left: 5.0, top: 8.0),
-//                   child: Container(
-//                     //height: 40.0,
-//                     child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Text(
-//                           info['title'].toString(),
-//                           style: TextStyle(
-//                               color: Colors.white, fontWeight: FontWeight.w600),
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                         Text(
-//                           info['artist'].toString(),
-//                           textAlign: TextAlign.left,
-//                           style: TextStyle(
-//                               fontWeight: FontWeight.w600,
-//                               color: AppColors.subTitleText),
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               Expanded(child: Container()),
-//               FavoriteButton(),
-//               SizedBox(height: 40.0, width: 40.0, child: PlayButton()),
-//             ],
-//           );
-//         });
-//   }
-// }
