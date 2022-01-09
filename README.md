@@ -1,6 +1,6 @@
 # rythm
 
-A new Flutter project.
+A semester project about cross-platform
 
 ## Getting Started
 

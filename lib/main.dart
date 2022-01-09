@@ -49,8 +49,6 @@ Future<void> startService() async {
     ),
   );
   GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
-  //GetIt.I.registerLazySingleton<PlaylistRepository>(() => DemoPlaylist());
-  // page state
   GetIt.I.registerLazySingleton<AudioManager>(() => AudioManager());
 }
 
@@ -66,16 +64,6 @@ class Rythm extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Rythm',
       home: Home(),
-      // onGenerateRoute: (settings) {
-      //   if (settings.name == 'check') {
-      //     final args = settings.arguments as AlbumHomePage;
-      //     return MaterialPageRoute(
-      //         settings: settings,
-      //         builder: (context) {
-      //           return Container(child: Text(args.itemTitle!));
-      //         });
-      //   }
-      // },
     );
   }
 }
