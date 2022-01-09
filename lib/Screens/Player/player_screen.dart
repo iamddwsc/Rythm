@@ -141,13 +141,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     final AudioManager audioManager = GetIt.I<AudioManager>();
-
     return SafeArea(
       child: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
-            //appBar: AppBar(),
             body: ValueListenableBuilder(
                 valueListenable: audioManager.currentSongNotifier,
                 builder: (context, Map<dynamic, dynamic> info, _) {
@@ -158,8 +156,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     backdropEnabled: true,
                     backdropOpacity: 0.5,
                     backdropColor: Colors.black,
-                    // parallaxEnabled: true,
-                    // parallaxOffset: 0.2,
                     isDraggable: false,
                     color: Colors.transparent,
                     controller: _pc,
