@@ -305,15 +305,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       Icons.home,
                       color: AppColors.white,
                     ),
-                    label: 'Trang chủ',
+                    label: 'Home',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.search, color: AppColors.white),
-                    label: 'Tìm kiếm',
+                    label: 'Search',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.library_music, color: AppColors.white),
-                    label: 'Thư viện',
+                    label: 'Library',
                   ),
                 ],
                 type: BottomNavigationBarType.fixed,

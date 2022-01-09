@@ -48,7 +48,7 @@ class _SearchLayoutState extends State<SearchLayout> {
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 300), () {
+    _debounce = Timer(const Duration(milliseconds: 500), () {
       //getPlacesFromHereMaps(query);
       //searching(_searchQuery.text);
       if (_searchQuery.text.replaceAll(' ', '').length > 0) {
@@ -144,6 +144,7 @@ class _SearchLayoutState extends State<SearchLayout> {
               Flexible(
                 child: TextField(
                   controller: _searchQuery,
+                  autocorrect: false,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(0.0),

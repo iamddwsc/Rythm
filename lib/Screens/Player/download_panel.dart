@@ -42,9 +42,9 @@ class DownloadPanel extends StatelessWidget {
     if (status.isGranted) {
       final dir = await getApplicationDocumentsDirectory();
       //From path_provider package
-      var _localPath = dir.path + _name;
+      var _localPath = dir.path;
       final savedDir = Directory(_localPath);
-      //print('aaaa ${savedDir}');
+      print('aaaaz ${savedDir}');
       await savedDir.create(recursive: true).then((value) async {
         String? _taskid = await FlutterDownloader.enqueue(
           url: _url,

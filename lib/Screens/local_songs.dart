@@ -29,16 +29,17 @@ class _LocalSongsPageState extends State<LocalSongsPage> {
     final status = await Permission.storage.request();
 
     if (status.isGranted) {
-      // final dir = await getApplicationDocumentsDirectory();
+      final dir = await getApplicationDocumentsDirectory();
       // //From path_provider package
       // final savedDir = Directory(dir.parent.parent.path + '/Download');
 
-      Directory savedDir = Directory('/storage/emulated/0/Download');
+      Directory savedDir = Directory(dir.path + '/');
       print('aaaa save dir ${savedDir}');
       print('aaa length ${_songs.length}');
       _files = savedDir.listSync(recursive: true, followLinks: false);
       for (FileSystemEntity entity in _files!) {
         String path = entity.path;
+        
         if (path.endsWith('.mp3') ||
             path.endsWith('flac') ||
             path.endsWith('m4a')) _songs.add(entity);
