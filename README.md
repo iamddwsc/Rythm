@@ -1,6 +1,6 @@
 # rythm
-
-A semester project about cross-platform
+Rythm - online music player mobile application
+7th semester project, topic: cross-platform application
 
 ## Getting Started
 
